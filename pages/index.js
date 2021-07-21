@@ -1,15 +1,45 @@
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
+import { Button, Card } from "semantic-ui-react";
 import factory from "../ethereum/factory";
+import Layout from "./../components/Layout";
 
 const Index = ({ campaigns }) => {
+  const [campaignItems, setCampaignItems] = useState([]);
+
   useEffect(() => {
-    console.log(campaigns[0]);
+    const items = campaigns.map((address) => {
+      return {
+        header: address,
+        description: (
+          <Link href={`/campaigns/${address}`}>
+            <a>View Campaign </a>
+          </Link>
+        ),
+        fluid: true,
+      };
+    });
+    setCampaignItems(items);
   }, []);
 
   return (
-    <div>
-      <h1>This is new campaign page</h1>
-    </div>
+    <Layout>
+      <div>
+        <div className='row'>
+          <div className='col-md-8'>
+            <h3>Open Campaigns</h3>
+            <Card.Group items={campaignItems} />
+          </div>
+          <div className='col-md-4 mt-3 text-center'>
+            <Link href='/campaigns/new'>
+              <a>
+                <Button content='Create Campaign' icon='add circle' primary />
+              </a>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </Layout>
   );
 };
 
